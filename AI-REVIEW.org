@@ -1,0 +1,32 @@
+#+title: AI-REVIEW — actlog
+
+Review TODO tree for the AI-written package.  Author of v0.1:
+z.ai-agent.  Reviewer lane: GLM-5.3 (Senior EL seat, all-repo scope
+per 2026-11-06 expansion) — BLOCKED on OpenRouter free quota until
+2026-11-08 06:00 UTC; the pass re-opens with the first live lane.
+
+* TODO GLM review pass (author≠reviewer law)
+  Scope: whole v0.1 diff.  Focus points the author flags honestly:
+  - =actlog--account=: three credit paths (continue / switch-idle /
+    max-gap).  Double-crediting was fixed before landing (totals are
+    credited only at session close; live accumulator feeds the mode
+    line).  Verify no path credits twice and no path loses time.
+  - =actlog--append-clock=: regexp-based entry merge.  Check the
+    hand-made-entry fallback (no :LOGBOOK: drawer) and the day-section
+    bounds (insertion must never land inside another day's section).
+  - =actlog--rotate-day-if-needed=: pre-midnight live seconds must
+    stay in the OLD day's file; verify the midnight clamp.
+  - =actlog--close-live=: journaled window is the live accrual, not
+    the raw since..end window — idle grace shrinks it honestly.
+  - State file: =prin1= plist, corrupt-tolerant load, other-day drop.
+* DONE Gates at landing time
+  - G1 spec: README.org (scope + honest StayFree boundary).
+  - G3: ERT 18/18 (see commit message for the breakdown).
+  - G4: byte-compile 0/0 with =byte-compile-error-on-warn= on Emacs
+    30.1 (Debian trixie emacs-nox, rebuilt in-sandbox).
+  - G2 reviewer: PENDING (quota), tracked above.
+* TODO On-device check (phone, once)
+  - First =SPC o a= opens the report with today's rows.
+  - =org-clock-report= on a journal day file renders a table.
+  - Screen off for >15 min: no time credited for the gap.
+  - Process kill (swipe away) + relaunch: state resumed, ≤5 min loss.

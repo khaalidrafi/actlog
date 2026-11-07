@@ -1,0 +1,85 @@
+#+title: actlog — StayFree, rebuilt inside Emacs
+#+subtitle: Activity tracking with Org integration, Android-first
+
+* What it is
+
+=actlog-mode= watches which buffer is front, credits the elapsed wall
+time to that activity, and writes plain Org clock data you own.  It is
+the Emacs-side replacement for StayFree's per-app screen-time rows:
+
+| You are in                         | Activity row        |
+|------------------------------------+---------------------|
+| a file inside a project            | =telega-org=        |
+| a file with no project             | =Files:downloads=   |
+| a special buffer (=*Telega*=, ...) | =Emacs:Telega=      |
+
+Every day gets one Org file (=actlog/2026-11-07.org=): one entry per
+activity, one =CLOCK:= line per work session, a =:MODE:= property on
+each entry.  Because the journal is ordinary Org clock data,
+=org-clock-report=, the agenda and =org-clock-sum= all work on it
+without this package loaded.
+
+* Scope, honestly
+
+Android sandboxes apps away from each other: Emacs cannot read
+UsageStatsManager, so device-wide per-app usage (the whole StayFree
+report) is not reachable from Elisp — by Android's rules, not ours.
+What this package replaces is the part of StayFree you can actually
+live in Emacs: where your Emacs hours go.  Everything stays on the
+device; no network, no daemon, no external binary.
+
+* Install (Android config law: :vc + public GitHub pin)
+
+#+begin_src emacs-lisp
+  (use-package actlog
+    :vc (:url "https://github.com/khaalidrafi/actlog.git" :rev "PIN")
+    :after org
+    :commands (actlog-report actlog-open-journal actlog-toggle)
+    :custom
+    (actlog-org-dir (expand-file-name "actlog/" org-directory))
+    :config
+    (actlog-mode +1))
+#+end_src
+
+* Commands
+
+| Command              | What it does                                    |
+|----------------------+-------------------------------------------------|
+| =M-x actlog-mode=    | tracking on/off (global minor mode)             |
+| =M-x actlog-report=  | per-activity table for today (or any day)       |
+| =M-x actlog-open-journal= | open the day's Org file                    |
+| =M-x actlog-toggle=  | quick pause/resume                              |
+
+In the emacs-android config the leader keys are =SPC o a= (report),
+=SPC o j= (journal), =SPC o T= (toggle).
+
+* Options
+
+| Option                       | Default | Meaning                                  |
+|------------------------------+---------+------------------------------------------|
+| =actlog-interval=            | 15 s    | sampler period                           |
+| =actlog-flush-interval=      | 300 s   | journal flush; bounds crash loss         |
+| =actlog-idle-threshold=      | 180 s   | input idleness before time stops         |
+| =actlog-max-gap=             | 900 s   | bigger sample gap = suspension, discard  |
+| =actlog-org-dir=             | nil     | journal dir (default =org-directory=/actlog/) |
+| =actlog-state-file=          | nil     | state file (default in =user-emacs-directory=) |
+| =actlog-ignore-buffer-regexps= | see source | buffers never tracked                 |
+
+* Android behaviour (org.gnu.emacs / Termux, Emacs 30)
+
+- Two timers (15 s / 300 s), both trivial battery-wise.
+- When Android freezes or kills the process, the sampler stops
+  ticking.  A gap above =actlog-max-gap= is treated as suspension and
+  never credited — no phantom hours while the phone sat in your
+  pocket.  Work done before the suspension is kept.
+- State is flushed to =actlog-state-file= every flush interval and on
+  =kill-emacs-hook=; a hard kill loses at most one flush window.
+- Day rollover splits the open session at local midnight: pre-midnight
+  seconds stay in the old day's file.
+
+* Development
+
+#+begin_src sh
+  make compile   # byte-compile, 0 warnings (byte-compile-error-on-warn)
+  make test      # ERT suite
+#+end_src
