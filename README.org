@@ -83,3 +83,13 @@ In the emacs-android config the leader keys are =SPC o a= (report),
   make compile   # byte-compile, 0 warnings (byte-compile-error-on-warn)
   make test      # ERT suite
 #+end_src
+
+* SUPERSEDED (2026-11-14)
+
+This package is superseded by =org-activity=
+(https://github.com/khaalidrafi/org-activity), the cross-platform
+ActivityWatch alternative for Emacs on Linux and Android: its engine
+continues this codebase (same sampler, same Org CLOCK journal)
+behind a source seam that also credits the Linux system foreground
+window, alongside an Android Usage Access module.  No further
+development here; fix forward in org-activity.
