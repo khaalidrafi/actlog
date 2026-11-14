@@ -30,3 +30,13 @@ per 2026-11-06 expansion) — BLOCKED on OpenRouter free quota until
   - =org-clock-report= on a journal day file renders a table.
   - Screen off for >15 min: no time credited for the gap.
   - Process kill (swipe away) + relaunch: state resumed, ≤5 min loss.
+** DONE superseded by org-activity — lead review pass (2026-11-15)
+   Member commits 3f07469 (README SUPERSEDED note) and 92ec624
+   (LICENSE) close this repo per the 2026-11-14 "Complete ALL Emacs"
+   order.  Lead review: note content verified (engine continues in
+   khaalidrafi/org-activity behind the source-function seam; fix
+   forward there), commit identity + trailers correct, right lane
+   (ai/main).  The emacs-android config swap landed separately
+   (khaalidrafi/emacs-android 1a8f423 + 5c0a636).  Repo left
+   unarchived pending owner call — say the word for the GitHub
+   archive flag.
