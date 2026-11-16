@@ -1,6 +1,17 @@
 #+title: actlog — StayFree, rebuilt inside Emacs
 #+subtitle: Activity tracking with Org integration, Android-first
 
+* DEPRECATED — merged into =org-activity=
+
+This package is frozen.  Its engine (per-buffer time accounting into Org
+CLOCK data, one journal file per day, =:MODE:= rows) now lives in
+[[https://github.com/khaalidrafi/org-activity][org-activity]] as
+=org-activity.el= — same design, same 32-function engine, plus the Linux
+foreground-window module and the Android usage module, under one roof.
+
+Nothing here is deleted, so old clones keep working.  Do not add features
+and do not file fixes against this repo: they go to =org-activity=.
+
 * What it is
 
 =actlog-mode= watches which buffer is front, credits the elapsed wall
