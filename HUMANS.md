@@ -16,8 +16,9 @@ it with this package not even loaded.
 
 What it deliberately is NOT: device-wide per-app screen time. Android
 sandboxes apps away from each other, so Emacs cannot read
-UsageStatsManager; that half lives in `android-usage.el` (a sibling
-repo) which imports a usage-app export instead.
+UsageStatsManager. STATUS 2026-11-18: this package is DEPRECATED -
+its engine and the Android usage import both live in the successor
+repo `org-activity` now; this repo is kept for history.
 
 ## Mental model
 
